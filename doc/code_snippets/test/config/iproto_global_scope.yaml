@@ -1,0 +1,10 @@
+iproto:
+  listen:
+    127.0.0.1:3301
+
+groups:
+  group-001:
+    replicasets:
+      replicaset-001:
+        instances:
+          instance-001: {}
