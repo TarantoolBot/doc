@@ -205,7 +205,7 @@
 
 .. _box_box_sequence_current:
 
-.. c:function:: int box_sequence_current(uint32_t seq_id, int64_t *result);
+.. c:function:: int box_sequence_current(uint32_t seq_id, int64_t *result)
 
     Since version :doc:`2.4.1 </release/2.4.1>`.
     Return the last retrieved value of the specified sequence.
@@ -217,9 +217,24 @@
     :return: 0 on success and -1 otherwise. In case of an error user
                 could get it via ``box_error_last()``.
 
-.. _box_box_session_id:
+..  _box_box_schema_version:
 
-.. c:function:: uint64_t box_session_id(void);
+..  c:function:: uint32_t box_schema_version(void)
+
+    Since version :doc:`2.11.0 </release/2.11.0>`.
+    Return the database schema version.
+    A schema version is a number that indicates whether the :ref:`database schema <index-box-data_schema_description>` is changed.
+    For example, the ``schema_version`` value grows if a :ref:`space <index-box_space>` or :ref:`index <index-box_index>`
+    is added or deleted, or a space, index, or field name is changed.
+
+    :return: the database schema version
+    :rtype: number
+
+    See also :ref:`box.info.schema_version <box_info_schema_version>` and :ref:`IPROTO_SCHEMA_VERSION <internals-iproto-keys-schema_version>`.
+
+..  _box_box_session_id:
+
+..  c:function:: uint64_t box_session_id(void)
 
     Since version :doc:`2.11.0 </release/2.11.0>`.
     Return the unique identifier (ID) for the current session.
@@ -227,4 +242,22 @@
     :return: the unique identifier (ID) for the current session
     :return: 0 or -1 if there is no session
 
-    See also :ref:`box.session.id()<box_session-id>`
+    See also :ref:`box.session.id() <box_session-id>`
+
+..  _box_box_iproto_send:
+
+..  c:function:: int box_iproto_send(uint64_t sid, char *header, char *header_end, char *body, char *body_end)
+
+    Since version :doc:`2.11.0 </release/2.11.0>`.
+    Sends an :ref:`IPROTO <internals-iproto-format>` packet over the session's socket with the given MsgPack header
+    and body. NB: делает yield.
+
+    :param uint32_t     sid: space identifier
+    :param char*     header:
+    :param char*     header_end:
+    :param char*     body:
+    :param char*     body_end: encoded tuple in MsgPack Array format ([ field1, field2, ...])
+
+    :return: 0 on success or 1 if there is a failure
+
+    See also :ref:`box.session.id() <box_session-id>`
